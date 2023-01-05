@@ -236,7 +236,7 @@ Xv = vec.textsToSequences(Xv)
 Xt = vec.textsToSequences(Xt)
 ```
 
-The last preprocessing step needed is to prepare the matrix with the word embeddings that will be used on the embedding layer of the network. The matrix contains pretrained Glove embeddings will be used with an embedding dimension of 300:
+The last preprocessing step needed is to prepare the matrix with the word embeddings that will be used on the embedding layer of the network. The matrix contains the pretrained embeddings that will be used, with an embedding dimension of 300:
 
 
 ```python
