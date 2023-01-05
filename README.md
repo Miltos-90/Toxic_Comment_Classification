@@ -409,18 +409,6 @@ history = model.fit(
     Launching TensorBoard...
 
 
-
-
-<iframe
-    width="100%"
-    height="800"
-    src="http://localhost:6006"
-    frameborder="0"
-    allowfullscreen
-></iframe>
-
-
-
     Train on 1262413 samples, validate on 270731 samples
     Epoch 1/30
        1024/1262413 [..............................] - ETA: 54:23 - loss: 1.2618 - acc: 0.1992 - auc: 0.4811WARNING:tensorflow:Method (on_train_batch_end) is slow compared to the batch update (0.128238). Check your callbacks.
