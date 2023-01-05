@@ -1,6 +1,5 @@
-# Toxic Comment Classification
+# Toxic Comment Detection
 
-## Overview
 The goal of the following is to detect toxic comments (i.e. comments that contain threats, obscenity, insults, hate speech, etc.) from Wikipedia's talk page edits. The dataset used is available from the [Perspective API](https://perspectiveapi.com/research/): a collaborative research effort by Jigsaw and Google's Counter Abuse Technology team, who publish datasets, conduct research, and open source code w.r.t. natural language processing and machine learning.
 
 The dataset contains roughly 2 million comments from the Civil Comments platform, and each comment is annotated for toxicity by up to 10 annotators. These annotations were subsequently aggreggated to represent the target variale, which corresponds to a 0.0 - 1.0 float that representes the fraction of annotators who believe that the comment is toxic. A detailed description of the dataset can be found in [Sorensen et al.](https://research.google/pubs/pub48094/)
