@@ -411,7 +411,6 @@ history = model.fit(
 
     Train on 1262413 samples, validate on 270731 samples
     Epoch 1/30
-       1024/1262413 [..............................] - ETA: 54:23 - loss: 1.2618 - acc: 0.1992 - auc: 0.4811WARNING:tensorflow:Method (on_train_batch_end) is slow compared to the batch update (0.128238). Check your callbacks.
     1262413/1262413 [==============================] - 87s 69us/sample - loss: 0.7606 - acc: 0.7803 - auc: 0.9019 - val_loss: 0.2829 - val_acc: 0.8720 - val_auc: 0.9367
     Epoch 2/30
     1262413/1262413 [==============================] - 83s 66us/sample - loss: 0.6623 - acc: 0.8321 - auc: 0.9263 - val_loss: 0.2400 - val_acc: 0.9012 - val_auc: 0.9400
