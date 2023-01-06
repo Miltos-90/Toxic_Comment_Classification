@@ -1,3 +1,7 @@
+""" This module defines several constants (dictionaries etc) that are used in 
+    the preprocess module for text preprocessing.
+"""
+
 import re
 from nltk.corpus import stopwords
 
@@ -57,7 +61,8 @@ ABBREVIATIONS = {
     "9":"Parent is watching ",
     ";S":"Warning",
     "<3":"Love",
-    "<3333":"Love love love",
+    "<33":"Love love",
+    "<333":"Love love love",
     "?":"I have a question",
     "?4U":"I have a question for you",
     "@TEOTD":"At the end of the day",
@@ -4165,6 +4170,9 @@ PATTERN_URL = re.compile(r'https?://\S+|www\.\S+')
 
 # re pattern to match extended punctuation (string.punctuation only contains ASCII characters)
 PATTERN_PUNCTUATION = re.compile(r'[^\w\s]') 
+
+# re pattern to match multiple consecutive instances of consecutive duplicate characters
+PATTERN_DUPLICATE_CHARS = re.compile(r"(\w)\1+(\w)\2+")
 
 
 

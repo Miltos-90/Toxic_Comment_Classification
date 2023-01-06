@@ -1,3 +1,10 @@
+""" This module implements the text preprocessing pipeline. 
+    It defines all the necessary functions, classes, and objects, and implements all
+    the necessary preprocessing steps in the preprocess() function at the bottom.
+
+    Some functions used here come from: https://www.kaggle.com/code/sudalairajkumar/getting-started-with-text-preprocessing
+"""
+
 import re
 import string
 import pkg_resources as pkgr
@@ -16,59 +23,43 @@ import constants as c
 
 class abbreviations:
 
-    @classmethod
     @staticmethod
     def to_text(text:str, abbrvDict:dict = c.ABBREVIATIONS) -> str:
-        ''' Converts chat (slang) abbreviatons to standard text.
-            Source: https://www.kaggle.com/code/sudalairajkumar/getting-started-with-text-preprocessing#Chat-Words-Conversion
-        '''
+        ''' Converts chat (slang) abbreviatons to standard text. '''
 
-        newtext = []
-        
-        for w in text.split():
-            
-            if w in abbrvDict: newtext.append(abbrvDict[w])
-            else:              newtext.append(w)
+        for abbreviation, meaning in abbrvDict.items():  
+            if abbreviation in text: 
+                text = re.sub(abbreviation, meaning, text)
 
-        return " ".join(newtext)
+        return text
 
 class emojis:
 
-    @classmethod
     @staticmethod
     def to_text(text:str, emojiDict:dict = c.EMOJIS) -> str:
         ''' Maps emojis to text 
-            Source: https://www.kaggle.com/code/sudalairajkumar/getting-started-with-text-preprocessing
+            
         '''
         
         for emot in emojiDict:
             text = re.sub(u'('+emot+')', emojiDict[emot], text)
         return text
 
-    @classmethod
     @staticmethod
     def remove(text:str, pattern = c.PATTERN_EMOJI) -> str:
-        ''' Removes Emojis from a string
-            Source: https://www.kaggle.com/code/sudalairajkumar/getting-started-with-text-preprocessing#Removal-of-HTML-Tags
-        '''
+        ''' Removes Emojis from a string '''
         return pattern.sub(r'', text)
 
 class emoticons:
 
-    @classmethod
     @staticmethod
     def remove(text:str, pattern = c.PATTERN_EMOTICON) -> str:
-        ''' Removes Emoticons from a string
-            Source: https://www.kaggle.com/code/sudalairajkumar/getting-started-with-text-preprocessing#Removal-of-HTML-Tags
-        '''
+        ''' Removes Emoticons from a string '''
         return pattern.sub(r'', text)
 
-    @classmethod
     @staticmethod
     def to_text(text:str, emoticonDict:dict = c.EMOTICONS) -> str:
-        ''' Maps emoticons to text 
-            Source: https://www.kaggle.com/code/sudalairajkumar/getting-started-with-text-preprocessing
-        '''
+        ''' Maps emoticons to text '''
         
         for emot in emoticonDict:
             text = re.sub(u'('+emot+')', emoticonDict[emot], text)
@@ -77,53 +68,49 @@ class emoticons:
 
 class html:
 
-    @classmethod
     @staticmethod
     def remove(text:str, pattern = c.PATTERN_HTML) -> str:
-        ''' Removes URLs from a string
-            Source: https://www.kaggle.com/code/sudalairajkumar/getting-started-with-text-preprocessing#Removal-of-HTML-Tags
-        '''
+        ''' Removes URLs from a string '''
         return pattern.sub(r'', text)
 
 class url:
 
-    @classmethod
     @staticmethod
     def remove(text:str, pattern = c.PATTERN_URL) -> str:
-        ''' Removes URLs from a string
-            Source: https://www.kaggle.com/code/sudalairajkumar/getting-started-with-text-preprocessing#Removal-of-HTML-Tags
-        '''
+        ''' Removes URLs from a string '''
         return pattern.sub(r'', text)
 
 class numeric:
 
-    @classmethod
     @staticmethod
     def to_text(text:str) -> str:
-        ''' Maps numbers to text (eg 84 -> eighty-four)
-            Source: https://stackoverflow.com/questions/64173161/python-regular-expression-substitution-function-using-lambda-in-the-replacement (answer by Liju)
-        '''
+        ''' Maps numbers to text (eg 84 -> eighty-four) '''
         
         return re.sub(r'(\d+)', lambda x: num2words(x.group()), text)
 
 class punctuation:
 
-    @classmethod
     @staticmethod
     def remove(text:str, pattern = c.PATTERN_PUNCTUATION) -> str:
-        ''' Removes punctuation from a string
-        '''
+        ''' Removes punctuation from a string '''
         return pattern.sub(r'', text)
 
 class stopwords:
 
-    @classmethod
     @staticmethod    
     def remove(text:str, wordList:set = c.STOPWORDS) -> str:
-        ''' Removes stopwords from a string
-        '''
+        ''' Removes stopwords from a string '''
         tokens = [t for t in text.split() if t not in wordList]
         return " ".join(tokens)
+
+class spelling:
+
+    @staticmethod
+    def deduplicate(text:str, pattern = c.PATTERN_DUPLICATE_CHARS) -> str:
+        """ Removes multiple consecutive sequences of consecutive duplicate characters in a string. 
+            eg: cooool -> cool, goooaaal -> goal
+        """
+        return pattern.sub(r"\1\2", text)
 
 class SpellingCorrector():
     """ Convenience wrapper for spelling correction with SymSpell
@@ -223,6 +210,7 @@ def preprocess(text:str) -> str:
     text = contractions.fix(text)                     # Expand contractions
     text = numeric.to_text(text)                      # Convert digits to words
     text = unidecode(text)                            # Convert accented characters
+    text = spelling.deduplicate(text)                 # Remove consecutive multiple instance of duplicated chars 
     text = sent_tokenize(text, language = 'english')  # Split into sentences
     text = lemmatize(text)                            # Lemmatize
     text = [s.lower().strip() for s in text]          # Lower-case and strip leading / trailing spaces
