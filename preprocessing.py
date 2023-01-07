@@ -27,9 +27,18 @@ class abbreviations:
     def to_text(text:str, abbrvDict:dict = c.ABBREVIATIONS) -> str:
         ''' Converts chat (slang) abbreviatons to standard text. '''
 
-        for abbreviation, meaning in abbrvDict.items():  
+        for abbreviation, meaning in abbrvDict.items(): 
+
+            # Check if abbreviation exists and replace all appearances
             if abbreviation in text: 
                 text = re.sub(abbreviation, meaning, text)
+
+            else:
+
+                # Check if it appears lowercased as well
+                abbrvLower = abbreviation.lower()
+                if abbrvLower in text: 
+                    text = re.sub(abbreviation, meaning, text)
 
         return text
 
