@@ -24,21 +24,11 @@ import constants as c
 class abbreviations:
 
     @staticmethod
-    def to_text(text:str, abbrvDict:dict = c.ABBREVIATIONS) -> str:
+    def to_text(text:str, abbrvDict:  dict = c.ABBREVIATIONS) -> str:
         ''' Converts chat (slang) abbreviatons to standard text. '''
-
-        for abbreviation, meaning in abbrvDict.items(): 
-
-            # Check if abbreviation exists and replace all appearances
-            if abbreviation in text: 
-                text = re.sub(abbreviation, meaning, text)
-
-            else:
-
-                # Check if it appears lowercased as well
-                abbrvLower = abbreviation.lower()
-                if abbrvLower in text: 
-                    text = re.sub(abbreviation, meaning, text)
+    
+        for abbreviation, meaning in abbrvDict.items():
+            text = re.sub(abbreviation, meaning, text, flags = re.IGNORECASE)
 
         return text
 
@@ -46,12 +36,11 @@ class emojis:
 
     @staticmethod
     def to_text(text:str, emojiDict:dict = c.EMOJIS) -> str:
-        ''' Maps emojis to text 
-            
-        '''
+        ''' Maps emojis to text. '''
         
         for emot in emojiDict:
             text = re.sub(u'('+emot+')', emojiDict[emot], text)
+        
         return text
 
     @staticmethod

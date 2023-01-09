@@ -810,6 +810,7 @@ ABBREVIATIONS = {
     r"(?<![A-Za-z])LTNS(?![A-Za-z])": "Long time no see",
     r"(?<![A-Za-z])LTOD(?![A-Za-z])": "Laptop of death",
     r"(?<![A-Za-z])LTS(?![A-Za-z])": "Laughing to self",
+    r"(?<![A-Za-z])LUV(?![A-Za-z])": "Love",
     r"(?<![A-Za-z])LULT(?![A-Za-z])": "Love you long time",
     r"(?<![A-Za-z])LULZ(?![A-Za-z])": "Joke",
     r"(?<![A-Za-z])LVM(?![A-Za-z])": "Left voice mail",
