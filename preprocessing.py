@@ -44,14 +44,14 @@ class emojis:
         return text
 
     @staticmethod
-    def remove(text:str, pattern = c.PATTERN_EMOJI) -> str:
+    def remove(text:str, pattern = c.patterns.EMOJI) -> str:
         ''' Removes Emojis from a string '''
         return pattern.sub(r'', text)
 
 class emoticons:
 
     @staticmethod
-    def remove(text:str, pattern = c.PATTERN_EMOTICON) -> str:
+    def remove(text:str, pattern = c.patterns.EMOTICON) -> str:
         ''' Removes Emoticons from a string '''
         return pattern.sub(r'', text)
 
@@ -67,14 +67,14 @@ class emoticons:
 class html:
 
     @staticmethod
-    def remove(text:str, pattern = c.PATTERN_HTML) -> str:
+    def remove(text:str, pattern = c.patterns.HTML) -> str:
         ''' Removes URLs from a string '''
         return pattern.sub(r'', text)
 
 class url:
 
     @staticmethod
-    def remove(text:str, pattern = c.PATTERN_URL) -> str:
+    def remove(text:str, pattern = c.patterns.URL) -> str:
         ''' Removes URLs from a string '''
         return pattern.sub(r'', text)
 
@@ -89,7 +89,7 @@ class numeric:
 class punctuation:
 
     @staticmethod
-    def remove(text:str, pattern = c.PATTERN_PUNCTUATION) -> str:
+    def remove(text:str, pattern = c.patterns.PUNCTUATION) -> str:
         ''' Removes punctuation from a string '''
         return pattern.sub(r'', text)
 
@@ -104,11 +104,23 @@ class stopwords:
 class spelling:
 
     @staticmethod
-    def deduplicate(text:str, pattern = c.PATTERN_DUPLICATE_CHARS) -> str:
+    def deduplicate(text:str, pattern = c.patterns.DUPLICATE_CHARS) -> str:
         """ Removes multiple consecutive sequences of consecutive duplicate characters in a string. 
             eg: cooool -> cool, goooaaal -> goal
         """
         return pattern.sub(r"\1\2", text)
+
+    @staticmethod
+    def standardize_lettercase(text:str, pattern = c.patterns.UPPERCASE) -> str:
+        """ Naively standardizes lettercase: Capitalizes the first non-space character on the given string, 
+            and the first character after '.', '!', '?'. Everything else is lowercased.
+        """
+
+        text =  re.sub(pattern,
+                    lambda c: c.group(0).upper(), # Uppercase matches
+                    text.lower())                 # Fully lowercased text
+
+        return text
 
 class SpellingCorrector():
     """ Convenience wrapper for spelling correction with SymSpell
@@ -208,6 +220,7 @@ def preprocess(text:str) -> str:
     text = contractions.fix(text)                     # Expand contractions
     text = numeric.to_text(text)                      # Convert digits to words
     text = unidecode(text)                            # Convert accented characters
+    text = spelling.standardize_lettercase(text)      # Standardize upper- and lower-case characters
     text = spelling.deduplicate(text)                 # Remove consecutive multiple instance of duplicated chars 
     text = sent_tokenize(text, language = 'english')  # Split into sentences
     text = lemmatize(text)                            # Lemmatize

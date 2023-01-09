@@ -4120,31 +4120,33 @@ EMOTICONS = {
 STOPWORDS = set(stopwords.words('english')) # English language stopwords from NLTK
 
 ### Patterns 
-# re pattern to remove emojis
-PATTERN_EMOJI = re.compile(
-    "["
-    u"\U0001F600-\U0001F64F"  # emoticons
-    u"\U0001F300-\U0001F5FF"  # symbols & pictographs
-    u"\U0001F680-\U0001F6FF"  # transport & map symbols
-    u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
-    u"\U00002702-\U000027B0"
-    u"\U000024C2-\U0001F251"
-    "]+", flags = re.UNICODE)
+class patterns:
 
-# re pattern to remove emoticons
-PATTERN_EMOTICON = re.compile(u'(' + u'|'.join(k for k in EMOTICONS) + u')')
+    # regex to remove emojis
+    EMOJI = re.compile(
+        "["
+        u"\U0001F600-\U0001F64F"  # emoticons
+        u"\U0001F300-\U0001F5FF"  # symbols & pictographs
+        u"\U0001F680-\U0001F6FF"  # transport & map symbols
+        u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
+        u"\U00002702-\U000027B0"
+        u"\U000024C2-\U0001F251"
+        "]+", flags = re.UNICODE)
 
-# re pattern to match HTML tags
-PATTERN_HTML = re.compile('<.*?>') 
+    # regex to remove emoticons
+    EMOTICON = re.compile(u'(' + u'|'.join(k for k in EMOTICONS) + u')')
 
-# re pattern to match URL patterns
-PATTERN_URL = re.compile(r'https?://\S+|www\.\S+')
+    # regex to match HTML tags
+    HTML = re.compile('<.*?>') 
 
-# re pattern to match extended punctuation (string.punctuation only contains ASCII characters)
-PATTERN_PUNCTUATION = re.compile(r'[^\w\s]') 
+    # regex to match URL patterns
+    URL = re.compile(r'https?://\S+|www\.\S+')
 
-# re pattern to match multiple consecutive instances of consecutive duplicate characters
-PATTERN_DUPLICATE_CHARS = re.compile(r"(\w)\1+(\w)\2+")
+    # regex to match extended punctuation (string.punctuation only contains ASCII characters)
+    PUNCTUATION = re.compile(r'[^\w\s]') 
 
+    # regex to match multiple consecutive instances of consecutive duplicate characters
+    DUPLICATE_CHARS = re.compile(r"(\w)\1+(\w)\2+")
 
-
+    # regex to match word characters after '.', '!' and '?'. 
+    UPPERCASE = re.compile(r"(^|[.?!]\W*?\d*?)\s*([a-zA-Z])")
