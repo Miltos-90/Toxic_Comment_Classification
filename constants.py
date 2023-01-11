@@ -4127,7 +4127,7 @@ class patterns:
     URL             = re.compile(r'https?://\S+|www\.\S+')                      # match URL patterns
     PUNCTUATION     = re.compile(r'[^\w\s]')                                    # match extended punctuation (string.punctuation only contains ASCII characters)
     DUPLICATE_CHARS = re.compile(r"(\w)\1+(\w)\2+")                             # match multiple consecutive instances of consecutive duplicate characters
-    UPPERCASE       = re.compile(r"(^|[.?!]\W*?\d*?)\s*([a-zA-Z])")             # match word characters after '.', '!' and '?'. 
+    UPPERCASE       = re.compile(r"(^\w|[.?!]\W*?\d*?|(?<= )i+(?= ))")          # match word characters after '.', '!' and '?'. 
     EMOJI           = re.compile(                                               # match emojis
                         "["
                         u"\U0001F600-\U0001F64F"  # emoticons
