@@ -202,7 +202,7 @@ df['num_words'] = df['comment_text'].str.split(' ').str.len()
 df.to_csv('./trainProcessed.csv')
 ```
 
-    100%|██████████| 37/37 [9:08:54<00:00, 890.13s/it]
+    100%|██████████| 37/37 [0:18:54<00:00, 1630.13s/it]
     
 
 Now we need to split the data in the various subsets, retain the most frequent words, and convert the comments to sequences:
