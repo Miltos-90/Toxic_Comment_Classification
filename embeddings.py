@@ -1,15 +1,17 @@
 """ This module contains all necessary functions required to generate the embedding matrix. """
-
+from collections import defaultdict
 import numpy as np
 import io
 
 
-def _readFile(pathToFile     : str,
-              vocabularyDict : dict, 
-              encoding       : str  = 'utf-8',
-              newlineChar    : str  = '\n',
-              errors         : str  = 'ignore',
-              verbose        : bool = True) -> dict:
+def _readFile(
+    pathToFile     : str,
+    vocabularyDict : dict, 
+    encoding       : str  = 'utf-8',
+    newlineChar    : str  = '\n',
+    errors         : str  = 'ignore',
+    verbose        : bool = True
+    ) -> dict:
     """ Reads the file containing the word embeddings, in which each line corresponds
         to a single word. Expected format for each line:
         <word> <embeddingValueDim1> <embeddingValueDim2> ... <embeddingValueDimN><newlineChars>
@@ -32,10 +34,12 @@ def _readFile(pathToFile     : str,
     return data
 
 
-def _makeMatrix(embeddingDict  : dict, 
-                vocabularyDict : dict, 
-                embeddingDim   : int,
-                verbose        : bool = True) -> np.array:
+def _makeMatrix(
+    embeddingDict  : dict, 
+    vocabularyDict : dict, 
+    embeddingDim   : int,
+    verbose        : bool = True
+    ) -> np.array:
     """ Makes the embedding matrix (vocabulary size x embeddingDim), given an embedding dictionary
         (keys: words, values: embeddings) and a vocabulary dictionary (keys: words, values: word indices).
     """
@@ -62,11 +66,30 @@ def _makeMatrix(embeddingDict  : dict,
 
     return matrix
 
+def _toDict(
+    matrix         : np.array,
+    vocabularyDict : dict
+    ) -> np.array:
+    """ Convenience function that converts the embedding matrix to a dictionary 
+        (keys: word, values: embedding vectors),
+    """
 
-def generate(embeddingFile  : str, 
-             vocabularyDict : dict, 
-             embeddingDim   : int) -> np.array:
-    """ Generates the embedding matrix (vocabulary size x embeddingDim).
+    vectorDict = defaultdict()
+
+    for idx, word in enumerate(vocabularyDict):
+        vectorDict[word] = matrix[idx,:]
+
+    return vectorDict
+
+
+def generate(
+    embeddingFile  : str, 
+    vocabularyDict : dict, 
+    embeddingDim   : int,
+    toDict         : bool = False
+    ) -> np.array:
+    """ Generates the embedding matrix (vocabulary size x embeddingDim), 
+        or dict (keys: words, values: embedding vectors).
         Assumes that words in the vocabulary are all lower-cased.
         Embedding for Out-of-vocab (OOV) tokens is all-zeroes.
     """
@@ -74,4 +97,5 @@ def generate(embeddingFile  : str,
     embeddingDict   = _readFile(embeddingFile, vocabularyDict)
     embeddingMatrix = _makeMatrix(embeddingDict, vocabularyDict, embeddingDim)
 
-    return embeddingMatrix
+    if toDict:  return _toDict(embeddingMatrix, vocabularyDict)
+    else:       return embeddingMatrix
