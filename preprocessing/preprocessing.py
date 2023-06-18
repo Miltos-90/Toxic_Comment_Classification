@@ -14,7 +14,7 @@ from nltk.corpus import wordnet
 from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk.stem.wordnet import WordNetLemmatizer
 from nltk import pos_tag
-import constants as c
+from . import constants as c
 
 
 class regexProcessor(object):
