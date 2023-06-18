@@ -23,9 +23,7 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.metrics import BinaryAccuracy, AUC
 from tensorflow.keras.callbacks import ModelCheckpoint, TensorBoard, EarlyStopping, ReduceLROnPlateau
 
-import config
-import utils
-import embeddings
+from helpers import config, utils, embeddings
 ```
 
 ## Light EDA
@@ -171,7 +169,7 @@ def preprocessChunk(df, textCol:str = 'comment_text'):
     '''  Preprocessing pipeline to normalize the comment texts. '''
 
     import pandas as pd
-    from preprocessing import preprocess
+    from preprocessing.preprocessing import preprocess
 
     for idx, row in df.iterrows():
         text = row[textCol]                     # Grab text in row
