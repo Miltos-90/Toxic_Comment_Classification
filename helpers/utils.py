@@ -1,5 +1,5 @@
 import numpy as np
-import config
+from . import config
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.preprocessing import text, sequence
 from tqdm import tqdm
