@@ -17,7 +17,7 @@ from nltk import pos_tag
 from . import constants as c
 
 
-class regexProcessor(object):
+class RegexProcessor(object):
     ''' Generic class to replace or remove a set of regex patterns'''
 
     def __init__(self,
@@ -127,33 +127,33 @@ class Lemmatizer():
 
 
 """ Instantiate all objects once upon calling the module """
-html          = regexProcessor(rDict = c.HTML,          flags = re.I)
-url           = regexProcessor(rDict = c.URL_STRIP,     flags = re.I)
-abbreviations = regexProcessor(rDict = c.ABBREVIATIONS, flags = re.I)
-emoticons     = regexProcessor(rDict = c.EMOTICONS,     flags = re.UNICODE)
-emojis        = regexProcessor(rDict = c.EMOJIS,        flags = re.UNICODE)
-numeric       = regexProcessor(rDict = c.NUMERIC)
-punctuation   = regexProcessor(rDict = c.PUNCTUATION)
-stopwords     = regexProcessor(rDict = c.STOPWORDS,     flags = re.I)
-duplicates    = regexProcessor(rDict = c.DUPE_CHARS,    flags = re.I)
-lettercase    = regexProcessor(rDict = c.LETTERCASE)
-multispace    = regexProcessor(rDict = c.MULTISPACE)
+html          = RegexProcessor(rDict = c.HTML,          flags = re.I)
+url           = RegexProcessor(rDict = c.URL_STRIP,     flags = re.I)
+abbreviations = RegexProcessor(rDict = c.ABBREVIATIONS, flags = re.I)
+emoticons     = RegexProcessor(rDict = c.EMOTICONS,     flags = re.UNICODE)
+emojis        = RegexProcessor(rDict = c.EMOJIS,        flags = re.UNICODE)
+numeric       = RegexProcessor(rDict = c.NUMERIC)
+punctuation   = RegexProcessor(rDict = c.PUNCTUATION)
+stopwords     = RegexProcessor(rDict = c.STOPWORDS,     flags = re.I)
+duplicates    = RegexProcessor(rDict = c.DUPE_CHARS,    flags = re.I)
+lettercase    = RegexProcessor(rDict = c.LETTERCASE)
+multispace    = RegexProcessor(rDict = c.MULTISPACE)
 lemmatize     = Lemmatizer()
 correct       = SpellingCorrector()
 
 
 def preprocess(text:str) -> str:
-    ''' Main processing function '''
+    ''' Main processing function. '''
 
-    text = html.transform(text)                      # Remove HTML tags
-    text = url.transform(text)                       # Remove URLs
     text = emoticons.transform(text)                 # Convert emoticons to words
     text = emojis.transform(text)                    # Convert emojis to words
     text = abbreviations.transform(text)             # Convert slang abbreviations
+    text = unidecode(text)                           # Convert the rest to ASCII
     text = contractions.fix(text)                    # Expand contractions
     text = numeric.transform(text)                   # Convert digits to words
-    text = unidecode(text)                           # Convert accented characters
     text = lettercase.transform(text)                # Standardize upper- and lower-case characters
+    text = html.transform(text)                      # Remove HTML tags
+    text = url.transform(text)                       # Extract URL texts.
     text = duplicates.transform(text)                # Remove consecutive multiple instance of duplicated chars 
     text = sent_tokenize(text, language = 'english') # Split into sentences
     text = lemmatize(text)                           # Lemmatize
